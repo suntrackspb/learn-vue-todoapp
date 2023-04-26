@@ -16,28 +16,33 @@
     <post-list
         :posts="posts"
         @remove="removePost"
+        v-if="!isPostLoaded"
     />
+    <div v-else>
+      <MyLoader></MyLoader>
+    </div>
   </div>
+
 </template>
 
 <script>
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyButton from "@/components/UI/MyButton";
+import MyLoader from "@/components/UI/MyLoader.vue";
+import axios from "axios";
 export default {
   components: {
     MyButton,
-    PostList, PostForm
+    PostList,
+    PostForm,
+    MyLoader
   },
   data() {
     return {
-      posts: [
-        {id: 1, title: 'Name 1', body: 'Text 1'},
-        {id: 2, title: 'Name 2', body: 'Text 2'},
-        {id: 3, title: 'Name 3', body: 'Text 3'},
-        {id: 4, title: 'Name 4', body: 'Text 4'},
-      ],
+      posts: [],
       dialogVisible: false,
+      isPostLoaded: false,
     }
   },
   methods: {
@@ -50,7 +55,26 @@ export default {
     },
     showDialog() {
       this.dialogVisible = true
+    },
+    async fetchPosts()
+    {
+      try {
+        this.isPostLoaded = true;
+        setTimeout(async () => {
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+          this.posts = response.data
+          this.isPostLoaded = false;
+        }, 1000)
+      } catch (e) {
+        console.log(`Error: ${e}`)
+      }
+      finally {
+
+      }
     }
+  },
+  mounted() {
+    this.fetchPosts()
   }
 }
 </script>

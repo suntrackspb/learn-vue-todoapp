@@ -1,8 +1,8 @@
 <template>
   <div class="post">
-    <div>
-      <div><strong>Name: </strong>{{ post.title }}</div>
-      <div><strong>Desc: </strong>{{ post.body }}</div>
+    <div style="padding: 10px 0">
+      <p><strong>Name: </strong>{{ post.title }}</p>
+      <p><strong>Desc: </strong>{{ post.body }}</p>
     </div>
     <div class="post__btn">
       <MyButton
@@ -39,5 +39,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   background: #130b13;
+}
+p {
+  padding-bottom: 5px;
 }
 </style>
